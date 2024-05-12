@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+  
+  <!-- Create Tables -->
+  <changeSet id="create_table_users" author="you">
+    <createTable tableName="users">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="Names" type="text" />
+      <column name="Emails" type="text" />
+      <column name="Passwords" type="text" />
+      <column name="AccessLevels" type="boolean" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_handbooks" author="you">
+    <createTable tableName="Handbooks">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="AssociatedProductIds" type="bigint" />
+      <column name="Names" type="text" />
+      <column name="Descriptions" type="text" />
+      <column name="UploadDates" type="timestamp with time zone" />
+      <column name="AdditionalFilesIds" type="bigint" />
+      <column name="PublicationDates" type="timestamp with time zone" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_tasks" author="you">
+    <createTable tableName="Tasks">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="AssemblerIds" type="bigint" />
+      <column name="AssociatedHandbookIds" type="bigint" />
+      <column name="IsFinished" type="boolean" />
+      <column name="UploadDates" type="timestamp with time zone" />
+      <column name="AssociatedAdminIds" type="bigint" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_favorites" author="you">
+    <createTable tableName="Favorites">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="UserIds" type="bigint" />
+      <column name="HandbookIds" type="bigint" />
+      <column name="HandbookDescriptions" type="text" />
+      <column name="HandbookNames" type="text" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_assemblyline" author="you">
+    <createTable tableName="AssemblyLine">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="Names" type="text" />
+      <column name="Descriptions" type="text" />
+      <column name="AssociatedUserId" type="bigint" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_products" author="you">
+    <createTable tableName="Products">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="Names" type="text" />
+      <column name="AssociatedAssembleLineId" type="bigint" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="create_table_additionalfiles" author="you">
+    <createTable tableName="AdditionalFiles">
+      <column name="Ids" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="AssociatedPublicationDates" type="timestamp with time zone" />
+      <column name="TypesOfFiles" type="text" />
+      <column name="FilesPath" type="text" />
+    </createTable>
+  </changeSet>
+  
+  <!-- Add Foreign Key Constraints -->
+  <changeSet id="add_fk_constraints" author="you">
+    <addForeignKeyConstraint baseTableName="Handbooks" baseColumnNames="AssociatedProductIds"
+                             constraintName="Handbooks_fk1" referencedTableName="Products"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Handbooks" baseColumnNames="AdditionalFilesIds"
+                             constraintName="Handbooks_fk5" referencedTableName="AdditionalFiles"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Tasks" baseColumnNames="AssemblerIds"
+                             constraintName="Tasks_fk1" referencedTableName="users"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Tasks" baseColumnNames="AssociatedHandbookIds"
+                             constraintName="Tasks_fk2" referencedTableName="Handbooks"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Tasks" baseColumnNames="AssociatedAdminIds"
+                             constraintName="Tasks_fk5" referencedTableName="users"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Favorites" baseColumnNames="UserIds"
+                             constraintName="Favorites_fk1" referencedTableName="users"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Favorites" baseColumnNames="HandbookIds"
+                             constraintName="Favorites_fk2" referencedTableName="Handbooks"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="AssemblyLine" baseColumnNames="AssociatedUserId"
+                             constraintName="AssemblyLine_fk3" referencedTableName="users"
+                             referencedColumnNames="Ids"/>
+    <addForeignKeyConstraint baseTableName="Products" baseColumnNames="AssociatedAssembleLineId"
+                             constraintName="Products_fk2" referencedTableName="AssemblyLine"
+                             referencedColumnNames="Ids"/>
+  </changeSet>
+  
+</databaseChangeLog>

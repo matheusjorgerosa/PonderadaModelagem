@@ -8,6 +8,10 @@
 
 ![Modelo Relacional do Banco de Dados](./assets/ponderadamodelagem.png)
 
+[Modelo Físico em SQL](modeloFisico.sql)
+
+[Modelo Físico em XML](modeloFisico.xml)
+
 #### Entidades contidas no Banco de Dados
 
 
